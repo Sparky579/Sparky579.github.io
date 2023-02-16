@@ -99,7 +99,7 @@
             row0.id = 'row'.concat(i);
             for (let j = 0; j < M; j++) {
                 let but0 = document.createElement('button');
-                let o = randInt(3);
+                let o = 0;
                 but0.textContent= charArr[o];
                 vararr[i * M + j] = o;
                 arr.push(o);
@@ -114,6 +114,13 @@
             }
             cont.appendChild(row0);
             row0.style.height = ''.concat(99 / N, '%');
+        }
+        var workTime = randInt(15) + 25;
+        for (let i = 0; i < workTime; i++) {
+            var ii = randInt(N);
+            var jj = randInt(M);
+            modifyWhole(ii, jj);
+            if (randInt(2) == 0) modifyWhole(ii, jj);
         }
         for (let i = 0; i < N; i++)
         for (let j = 0; j < M; j++)

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .box{
+            width:200px;
+            height:200px;
+            background-color: aqua;
+            float: left;
+            margin: 20px;
+            border-radius: 20%;
+        }
+        .box2 {
+            width: 400px;
+            height: 400px;
+            background-color: blue;
+            clear: both;
+        }
+        .pos1 {
+            left: 400px;
+            top: 400px;
+            position: relative;
+        }
+        .pos2 {
+            left: 400px;
+            top: 400px;
+            position: absolute;
+        }
+        .pos3 {
+            left: 700px;
+            top:700px;
+            position: fixed;
+        }
+        img {
+            width: 400px;
+            height: 400px;
+            float: left;
+        }
+        div p {
+            font-size: 60;
+            color: rebeccapurple;
+        }
+        h3 {
+            height: 600px;
+        }
+        .container{
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+    </div>
+    <div class="box2 pos1"></div>
+    <div class="box2 pos2"></div>
+    <div class="box2 pos3"></div>
+    <h3>Super Pekka!</h3>
+    <h3>Super Pekka!</h3>
+    <h3>Super Pekka!</h3>
+</body>
+</html>

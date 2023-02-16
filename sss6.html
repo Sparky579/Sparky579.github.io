@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container{
+            width: 600px;
+            height: 600px;
+            background-color: blanchedalmond;
+        }
+        .aaa{
+            background-color: aqua;
+            width: 11%;
+            height: 90%;
+            font-size: 200%;
+            color: brown;
+            margin: 0.5%;
+        }
+        .row{
+            height: 11%;
+        }
+        h1{
+            color:brown;
+        }
+        h3{
+            color: blue;
+        }
+        .red{
+            color: red;
+
+        }
+        .h3 span{
+            font-weight: bold;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="title1">你能把所有方块变成"咦"吗？</h1>
+    <h3>
+    <span id="score">当前“咦”的个数： </span>
+    <span class="red score0">0 </span>
+    </h3>
+    <div class="container"></div>
+    <script>
+        function randInt(range) {
+            return Math.floor(Math.random() * range);
+        }
+        function modifyStyle(i, j, val) {
+            if (i < 0 || j < 0 || i >= N || j >= N) return null;
+            let btn = document.getElementById('btn'.concat(i, j));
+            vararr[i * M + j] += val;
+            vararr[i * M + j] = (vararr[i * M + j] + 3) % 3;
+            var vr = vararr[i * M + j];
+            btn.textContent = charArr[vr];
+            btn.style.backgroundColor = colorArr[vr];
+        }
+        function getVal(i, j) {
+            return vararr[i * M + j];
+        }
+        function modifyWhole(i, j, val) {
+            modifyStyle(i, j, -1);
+            modifyStyle(i - 1, j, -1);
+            modifyStyle(i + 1, j, -1);
+            modifyStyle(i, j - 1 , -1);
+            modifyStyle(i, j + 1 , -1);
+            detectWhole();
+        }
+        function modifyScore() {
+            var ii = 0;
+            for (let i = 0; i < N * M; i++)
+                if (vararr[i] == 0) ii++;
+            var score0 = document.getElementsByClassName('red')[0];
+            score0.textContent = ii;
+            return ii;
+        }
+        function detectWhole() {
+            var ii = modifyScore();
+            if (ii == N * M){
+                var tit = document.getElementById('title1');
+                tit.textContent = '恭喜你通关成功！';
+            }
+        }
+        var num = 1;
+        var N = 7, M = 7;
+        var charArr = ['咦', '呀', '哦'];
+        var colorArr = ['chartreuse', 'aqua', 'coral'];
+        var arr = [];
+        var butarr = [];
+        var vararr = [];
+        var cont = document.getElementsByClassName("container")[0];
+        for (let i = 0; i < N; i++) {
+            let row0 = document.createElement('div');
+            row0.className='row';
+            row0.id = 'row'.concat(i);
+            for (let j = 0; j < M; j++) {
+                let but0 = document.createElement('button');
+                let o = randInt(3);
+                but0.textContent= charArr[o];
+                vararr[i * M + j] = o;
+                arr.push(o);
+                row0.appendChild(but0);
+                but0.className="aaa";
+                but0.id = "btn".concat(i, j);
+                but0.onclick = function() {
+                    console.log(but0.textContent);
+                    modifyWhole(i, j);
+                }
+                but0.style.width = ''.concat(99 / M - 1, '%');
+            }
+            cont.appendChild(row0);
+            row0.style.height = ''.concat(99 / N, '%');
+        }
+        for (let i = 0; i < N; i++)
+        for (let j = 0; j < M; j++)
+        modifyStyle(i, j, 0);
+        modifyScore();
+        // console.log(butarr);
+        
+        
+        
+    </script>
+</body>
+</html>

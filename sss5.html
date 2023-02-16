@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+    <style>
+        button{
+            font-size: 20pt;
+        width:200px;
+        height: 200px;
+        background-color: green;
+        animation: myAnim 2s linear 0s infinite ;
+        }
+        button:hover{
+            animation-play-state: paused;
+        }
+        @keyframes myAnim{
+            0%{
+                background-color: red;
+                width: 200px;
+                height: 200px;
+            }
+            50%{
+                background-color: blue;
+                width: 133px;
+                height: 300px;
+            }
+            100%{
+                background-color: aqua;
+                width: 200px;
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="temple">
+        咦咦咦咦咦
+        咦咦咦咦咦
+        咦咦咦咦咦
+        咦咦咦咦咦
+        咦咦咦咦咦
+        咦咦咦咦咦
+    </button>
+    <script>
+        console.log("fsdfsdf")
+        var dv = document.getElementsByClassName("temple")[0];
+        dv.textContent="哦哦哦哦哦\n哦哦哦哦哦"
+        console.log(dv);
+    </script>
+</body>
+</html>

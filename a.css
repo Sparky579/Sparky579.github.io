@@ -1,0 +1,27 @@
+h1{
+    color: aqua;
+}
+p, h3{
+    color: brown;
+}
+span{
+    color: blueviolet;
+    font-size: 16;
+}
+.giant{
+    color: burlywood;
+}
+.big{
+    font-size: 47px;
+}
+.tiaozhuan{
+    color: darkgoldenrod;
+    font-size: 30px;
+}
+#mytlte{
+    border: 3px dashed green;
+}
+*{
+    font-size: large;
+    color: black;
+}

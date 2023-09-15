@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conference Rooms</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+
+<div id="app">
+    <h1>Conference Rooms</h1>
+    <transition-group name="list1">
+    <table class="table-style">
+        <thead>
+            <tr>
+                <th>Room Name</th>
+                <th>Department</th>
+                <th>Type</th>
+                <th>Location</th>
+                <th>Date</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Max Duration</th>
+                <th>Operation</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="room in rooms" :key="room.id">
+                <td>{{ room.name }}</td>
+                <td>{{ room.department }}</td>
+                <td>{{ room.type }}</td>
+                <td>{{ room.location }}</td>
+                <td>{{ room.date }}</td>
+                <td>{{ room.startTime }}</td>
+                <td>{{ room.endTime }}</td>
+                <td>{{ convertToDuration(room.capacity) }}</td>
+                <td><button @click="deleteRoom(room.id)">Delete</button>
+                  <br><button @click="editing(room.id)">Edit</button></td>
+
+            </tr>
+        </tbody>
+    </table>
+    </transition-group>
+
+    <button @click="adding" id="showbtn">
+        {{btnText}}
+    </button>
+    <transition name="fade">
+    <div v-if="showForm" class="form0">
+        <form @submit.prevent="addRoom">
+          <h2> {{formTitle}} </h2>
+          <label class="form-item">
+              Room Name:
+              <input v-model="newRoom.name" />
+          </label>
+          <!-- Type Selection -->
+          <label class="form-item">Type:
+            <label>
+              <input type="radio" name="answer" value="small" v-model="newRoom.type">Small
+            </label>
+            
+            <label>
+              <input type="radio" name="answer" value="medium" v-model="newRoom.type">Medium
+            </label>
+          
+            <label>
+              <input type="radio" name="answer" value="big" v-model="newRoom.type">Big
+            </label>
+        </label>
+          <!-- Department Input -->
+          <label for="department" class="form-item">Department:
+          <input type="text" id="department" name="department" v-model="newRoom.department">
+          </label>
+          <!-- Date Selection -->
+          <label for="date" class="form-item">Date:
+          <input type="date" id="date" name="date" v-model="newRoom.date">
+          </label>
+          <!-- Start Time Selection -->
+          <label for="startTime" class="form-item">Start Time:
+            <input type="time" id="startTime" name="startTime" v-model="newRoom.startTime" @change="validateTime2"></label>
+          
+      
+          <!-- End Time Selection -->
+          <label for="endTime" class="form-item">End Time:
+          <input type="time" id="endTime" name="endTime" v-model="newRoom.endTime" @change="validateTime">
+          
+        </label>
+          <!-- Location Selection -->
+          <label for="building" class="form-item">Building:
+          <select id="building" name="building" v-model="newRoom.l1">
+              <option value="Teaching Building No.1">Teaching Building No.1</option>
+              <option value="Lecture Hall">Lecture Hall</option>
+              <option value="Research Building">Research Building</option>
+              <option value="Library">Library</option>
+              <option value="South Building">South Building</option>
+          </select>
+          <label for="room"> </label>
+          <input id="room" name="room" v-model="newRoom.l2">
+        </input>
+        </label>
+          <!-- Max Duration Input -->
+          <label for="maxDuration" class="form-item">Max Duration:
+          <input type="number" id="maxDuration" name="maxDuration" min="0" v-model="newRoom.capacity">
+          
+        </label>
+        <button type="submit">Submit</button>
+      </form>
+      
+    </div>
+    </transition>
+</div>
+  
+  <script type="module">
+  import { createApp } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js'
+  
+  createApp({
+    data() {
+      return {
+        rooms: [
+          { id: 1, name: "Room A", capacity: 10, 
+          type: "small", department: "Computer Science",
+          date: "2023-09-01", location: "South Building\n426A",
+          startTime: "08:00", endTime:"20:00",
+          l1: "South Building", l2: "426A" },
+          { id: 2, name: "Room B", capacity: 20, 
+          type: "big", department: "Electrical",
+          date: "2023-09-14", location: "South Building\n434A",
+          startTime: "00:00", endTime: "22:00",
+          l1: "South Building", l2: "434A" },
+        ],
+        newRoom: {
+          name: "",
+          capacity: 0,
+          type: "",
+          department: "",
+          date: "",
+          l1: "",
+          l2: "",
+          startTime: "",
+          endTime: ""
+        },
+        showForm: false,
+        formTitle: "Add New Conference",
+        nowId: 0,
+        isAdd: true,
+      };
+    },
+    computed: {
+        convertToDuration() {
+            return function(x) {
+              const hours = x % 24;
+              const days = Math.floor(x / 24);
+
+              if (days > 0) {
+                if (hours > 0) {
+                  return `${days}d ${hours}h`;
+                } else {
+                  return `${days}d`;
+                }
+              } else {
+                return `${hours}h`;
+              }
+            };
+          },
+        needShow() {
+            return this.isAdd ? (!this.showForm) : true;
+        },
+        btnText() {
+            return this.needShow ? "Add Room" : "Cancel";
+        }
+    },
+    methods: {
+      addRoom() {
+        if (this.isValid(this.newRoom)) {
+            const newId = this.rooms.length ? this.rooms[this.rooms.length - 1].id + 1 : 1;
+            const roomData = {
+              id: this.isAdd ? newId : this.nowId,
+              name: this.newRoom.name,
+              capacity: this.newRoom.capacity,
+              type: this.newRoom.type,
+              department: this.newRoom.department,
+              date: this.newRoom.date,
+              location: this.newRoom.l1 + '\n' + this.newRoom.l2,
+              startTime: this.newRoom.startTime,
+              endTime: this.newRoom.endTime,
+              l1: this.newRoom.l1,
+              l2: this.newRoom.l2,
+            };
+
+            if (this.isAdd) {
+              // 如果传入的是 true，把房间添加到数组里
+              this.rooms.push(roomData);
+            } else {
+              // 否则，找到现有的房间并进行修改
+              const index = this.rooms.findIndex(room => room.id === this.nowId);
+              if (index !== -1) {
+                this.rooms[index] = roomData;
+              }
+            }
+            this.showForm = false;
+        } 
+        else {
+            alert("Please input valid values!");
+        }
+      },
+      clearRoom() {
+        this.newRoom.name = "";
+        this.newRoom.capacity = 0;
+        this.newRoom.type = "";
+        this.newRoom.department = "";
+        this.newRoom.date = "";
+        this.newRoom.l1 = "";
+        this.newRoom.l2 = "";
+        this.newRoom.startTime = "";
+        this.newRoom.endTime = "";
+      },
+      adding() {
+        this.formTitle = "Add New Conference";
+        console.log(this.needShow);
+        this.showForm = this.needShow;
+        this.isAdd = true;
+        this.clearRoom();
+      },
+      editing(id) {
+        this.formTitle = "Edit Conference";
+        for (let key in this.newRoom) {
+          this.newRoom[key] = this.rooms.find(room => room.id === id)[key];
+        }
+        this.showForm = this.isAdd || this.nowId !== id
+         ? true: !this.showForm;
+        this.nowId = id;
+        this.isAdd = false;
+      },
+      deleteRoom(id) {
+        this.rooms = this.rooms.filter(room => room.id !== id);
+      },
+      isNameValid(name) {
+          const regex = /^\s*$/;
+          return !regex.test(name);
+      },
+      isValid(room) {
+        if (!this.isNameValid(room.name)) return false;
+        return !this.checkNullValuesInProxy(room);
+      },
+      checkNullValuesInProxy(proxy) {
+        console.log(proxy);
+        const keys = Reflect.ownKeys(proxy);
+
+        for (let key of keys) {
+          const value = Reflect.get(proxy, key);
+
+          if (value === null || value === undefined || value === '') {
+            return true; // 发现空值
+          }
+
+          // 如果值本身是一个对象或者数组，递归检查
+          if (typeof value === 'object' && value !== null) {
+            if (checkNullValuesInProxy(value)) {
+              return true; // 发现内部对象或数组中有空值
+            }
+          }
+        }
+
+        return false; // 没有发现空值
+      },
+      validateTime() {
+        const startTime = new Date(`1970-01-01T${this.newRoom.startTime}`);
+        const endTime = new Date(`1970-01-01T${this.newRoom.endTime}`);
+        if (endTime < startTime) {
+          alert("The end time cannot be earlier than the start time. Please choose again.");
+          this.newRoom.endTime = this.newRoom.startTime;
+        }
+      },
+      validateTime2() {
+        if (this.newRoom.endTime === undefined || this.newRoom.endTime === '')
+          return;
+        const startTime = new Date(`1970-01-01T${this.newRoom.startTime}`);
+        const endTime = new Date(`1970-01-01T${this.newRoom.endTime}`);
+        if (endTime < startTime) {
+          alert("The end time cannot be earlier than the start time. Please choose again.");
+          this.newRoom.startTime = this.newRoom.endTime;
+        }
+      },
+    },
+  }).mount('#app')
+  </script>
+  
+  

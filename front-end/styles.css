@@ -29,18 +29,36 @@
     background-color:#ffffff;
 }
 
+.flex-container {
+    display: flex;
+    align-items: center;  
+    flex-wrap: nowrap;    
+  }
+  
+  .flex-container > * {
+    margin-right: 10px; 
+  }
+  
+  .flex-container > :last-child {
+    margin-right: 0;     
+  }
+  
 
 
 /* 表格样式 */
 .table-style {
     width: 75%;
-    border-collapse: collapse;
+    /* border-collapse: collapse; */
     table-layout: auto;
     font-size: 14px;
     user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
+    border: 1px solid #000;  /* 例如，给表格添加一个边框 */
+    border-radius: 20px;     /* 设置圆角 */
+    border-spacing: 0;
+    overflow: hidden;        /* 为了确保内部的<tr>和<td>不超出圆角 */
 }
 
 /* 表头样式（第一行）*/
@@ -48,7 +66,7 @@
     background-color: #333; /* 深灰色背景 */
     color: #FFF;
     text-align: center;
-    border: 1px solid #000;
+    /* border: 1px solid #000; */
     padding: 10px; /* 增加略大的内边距 */
 }
 
@@ -63,8 +81,9 @@
 
 /* 单元格样式 */
 .table-style td {
+
     text-align: center;
-    border: 1px solid #000;
+    border: 0px solid #000;
     padding: 10px;
 }
 
@@ -86,6 +105,7 @@
 .form0 {
     padding: 20px 20px 20px 20px;           /* 20px padding inside the border */
     width: 90%;              /* Example width, adjust as needed */
+    
     margin: 0 auto;          /* Center the form on the page */
     /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  !* Optional: Add a subtle shadow for a better visual appearance *!*/
 }
@@ -134,6 +154,7 @@
 
 
 body {
+    font-family: 'Roboto', sans-serif;
     justify-content: center;
     align-items: center;
     height: 100vh;

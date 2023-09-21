@@ -1839,7 +1839,7 @@ window.__require = function e(t, n, o) {
                     }, o = this.fruitNode.children.length - 1; o >= 0; o--)
                         n(o);
                     this.lineNode.active = !0;
-                    for (var c = 1; c < this.lineNode.children.length; c++)
+                        for (var c = 1; c < this.lineNode.children.length; c++)
                         this.lineNode.children[c].active = !1;
                     a.default.GameUpdateCtrl = !1,
                     this.scheduleOnce(function() {

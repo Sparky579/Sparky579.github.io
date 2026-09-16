@@ -1,52 +1,290 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>spk327's website</title>
-    <link rel="stylesheet" href="./a.css">
-    <script src="spk.js"></script>
-    <style>
-        h1{
-            color: palevioletred;
-            font-size: 32px;
-        }
-        
-        .red{
-            background-color: darkblue;
-        }
-        .green{
-            background-color: white;
-        }
-        .blue{
-            background-color: red;
-        }
-        .container0{
-            height: auto;
-            width: 500px;
-        }
-        .square{
-            height: 50px;
-            width: 50px;
-            margin: 1%;
-        }
-        .purple{
-            color: purple;
-        }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sizhe Cheng</title>
+<meta name="description" content="Sizhe Cheng — M.Eng. by Research at Nanyang Technological University. Human-computer interaction and visual analytics for large language models.">
+<meta property="og:title" content="Sizhe Cheng">
+<meta property="og:description" content="HCI and visual analytics for large language models — interactive systems for RAG, program evolution, and mobile visualization.">
+<meta property="og:type" content="profile">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧭</text></svg>">
+<style>
+  :root{
+    --bg:#ffffff;
+    --fg:#1c1f24;
+    --muted:#63707e;
+    --faint:#8a95a1;
+    --line:#e6e9ed;
+    --accent:#1f3864;
+    --chip-bg:#f1f4f9;
+    --card:#fafbfc;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,"Songti SC",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue","PingFang SC","Microsoft YaHei",Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#14171a; --fg:#e7eaee; --muted:#9aa5b1; --faint:#78828d;
+      --line:#262b31; --accent:#8fb3e8; --chip-bg:#1d2228; --card:#181c20;
+    }
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0; background:var(--bg); color:var(--fg);
+    font-family:var(--sans); font-size:16px; line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px; margin:0 auto; padding:64px 20px 72px}
+  a{color:var(--accent); text-decoration:none; border-bottom:1px solid transparent; transition:border-color .15s}
+  a:hover{border-bottom-color:currentColor}
+
+  /* ---------- header ---------- */
+  header{display:flex; gap:22px; align-items:center; margin-bottom:26px}
+  .avatar{width:82px; height:82px; border-radius:50%; flex:0 0 auto; object-fit:cover;
+          border:1px solid var(--line); background:var(--chip-bg)}
+  h1{font-family:var(--serif); font-size:34px; line-height:1.15; margin:0 0 4px; letter-spacing:-.2px}
+  .role{color:var(--muted); font-size:15px; margin:0}
+  .links{display:flex; flex-wrap:wrap; gap:8px; margin:20px 0 0}
+  .links a{
+    font-size:13.5px; padding:5px 12px; border-radius:999px;
+    background:var(--chip-bg); color:var(--fg); border:1px solid var(--line);
+  }
+  .links a:hover{border-color:var(--accent); color:var(--accent)}
+
+  .lede{font-size:16.5px; color:var(--fg); margin:24px 0 0}
+  .lede .dim{color:var(--muted)}
+
+  /* ---------- sections ---------- */
+  section{margin-top:46px}
+  h2{
+    font-family:var(--sans); font-size:12px; font-weight:650; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--faint); margin:0 0 4px;
+  }
+  .rule{height:1px; background:var(--line); margin-bottom:18px}
+
+  /* ---------- publications ---------- */
+  .pub{display:grid; grid-template-columns:78px 1fr; gap:18px; padding:14px 0; border-bottom:1px solid var(--line)}
+  .pub:last-child{border-bottom:none}
+  .venue{
+    font-size:11.5px; font-weight:650; letter-spacing:.03em; color:var(--accent);
+    background:var(--chip-bg); border:1px solid var(--line); border-radius:5px;
+    padding:3px 0; text-align:center; height:fit-content; margin-top:3px;
+  }
+  .pub h3{font-size:16px; font-weight:620; margin:0 0 3px; line-height:1.4}
+  .authors{font-size:14px; color:var(--muted); margin:0 0 5px}
+  .authors b{color:var(--fg); font-weight:620}
+  .desc{font-size:14.5px; color:var(--muted); margin:0}
+  .meta{font-size:13px; margin-top:6px; color:var(--faint)}
+  .meta a{margin-right:12px}
+
+  /* ---------- timeline rows ---------- */
+  .row{display:grid; grid-template-columns:1fr auto; gap:6px 18px; padding:13px 0; border-bottom:1px solid var(--line)}
+  .row:last-child{border-bottom:none}
+  .row .what{font-size:15.5px; font-weight:620; margin:0}
+  .row .where{font-size:14px; color:var(--muted); margin:2px 0 0}
+  .row .when{font-size:13px; color:var(--faint); white-space:nowrap; text-align:right; padding-top:3px}
+  .row .note{grid-column:1/-1; font-size:14.5px; color:var(--muted); margin:6px 0 0}
+
+  ul.plain{list-style:none; padding:0; margin:0}
+  ul.plain li{padding:8px 0; border-bottom:1px solid var(--line); font-size:15px}
+  ul.plain li:last-child{border-bottom:none}
+  ul.plain b{font-weight:620}
+  ul.plain .when{color:var(--faint); font-size:13px}
+
+  .skills{display:grid; grid-template-columns:150px 1fr; gap:10px 18px; font-size:14.5px}
+  .skills dt{color:var(--faint); font-size:13px; letter-spacing:.02em; padding-top:1px}
+  .skills dd{margin:0; color:var(--fg)}
+
+  footer{margin-top:54px; padding-top:18px; border-top:1px solid var(--line);
+         font-size:13px; color:var(--faint); display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap}
+  footer a{color:var(--faint)}
+
+  @media (max-width:560px){
+    .wrap{padding:40px 18px 56px}
+    header{gap:16px}
+    .avatar{width:64px; height:64px}
+    h1{font-size:28px}
+    .pub{grid-template-columns:1fr; gap:6px}
+    .venue{justify-self:start; padding:3px 10px; margin:0 0 2px}
+    .skills{grid-template-columns:1fr; gap:2px 0}
+    .skills dd{margin-bottom:10px}
+    .row .when{text-align:left; grid-column:1/-1; padding-top:0}
+  }
+</style>
 </head>
 <body>
-    <h1>Welcome to SPK327's website!</h1>
-    <div class="container0">
-    <button class="red square"></button>
-    <button class="green square"></button>
-    <button class="blue square"></button>
-    </div>
-    <a href="sss6.html" class="tiaozhuan">小游戏</a>
-    <a href="front-end/ass1.html" class="tiaozhuan">会议室</a>
+<div class="wrap">
+
+<header>
+  <img class="avatar" src="https://avatars.githubusercontent.com/u/48359461?v=4" alt="" loading="lazy">
+  <div>
+    <h1>Sizhe Cheng</h1>
+    <p class="role">M.Eng. by Research, College of Computing and Data Science<br>Nanyang Technological University, Singapore</p>
+  </div>
+</header>
+
+<nav class="links">
+  <a href="mailto:sizhe003@e.ntu.edu.sg">sizhe003@e.ntu.edu.sg</a>
+  <a href="./Sizhe_Cheng_CV.pdf">CV (PDF)</a>
+  <a href="https://github.com/Sparky579">GitHub</a>
+</nav>
+
+<p class="lede">
+  I work on <b>human-computer interaction and visual analytics for large language models</b> —
+  <span class="dim">building interactive systems that make retrieval-augmented generation, LLM-driven program evolution,
+  and mobile data visualization interpretable, steerable, and actually deployable.</span>
+</p>
+
+<section>
+  <h2>Publications</h2><div class="rule"></div>
+
+  <article class="pub">
+    <div class="venue">CHI '26</div>
     <div>
-        <a href="./hcdmh/index.html" class="purple tiaozhuan">合成大马哈（仅在新域名可用）</a>
+      <h3>BAIT: Visual-illusion-inspired Privacy Preservation for Mobile Data Visualization</h3>
+      <p class="authors"><b>Sizhe Cheng</b>, Songheng Zhang, Dong Ma, Yong Wang</p>
+      <p class="desc">Stacks an optimized decoy chart over a real one, so the owner reads the truth up close while a
+        shoulder surfer at a distance is misled — driven by an explicit model of human perception across viewing distances.
+        Validated in a 32-participant lab study and a 12-participant field study.</p>
+      <p class="meta"><a href="https://doi.org/10.1145/3772318.3791259">DOI</a><a href="https://arxiv.org/abs/2601.18497">arXiv</a></p>
     </div>
+  </article>
+
+  <article class="pub">
+    <div class="venue">UIST '25</div>
+    <div>
+      <h3>RAGTrace: Understanding and Refining Retrieval-Generation Dynamics in Retrieval-Augmented Generation</h3>
+      <p class="authors"><b>Sizhe Cheng</b>, Jiaping Li, Huanchen Wang, Yuxin Ma</p>
+      <p class="desc">An interactive evaluation system that opens the RAG black box: multi-level analysis from aggregate
+        performance down to per-chunk retrieval relevance, generation fidelity, and cross-component interaction — users trace
+        knowledge provenance, localize failure cases, and iterate on retrieval strategy in place.</p>
+      <p class="meta"><a href="https://doi.org/10.1145/3746059.3747741">DOI</a><a href="https://arxiv.org/abs/2508.06056">arXiv</a></p>
+    </div>
+  </article>
+
+  <article class="pub">
+    <div class="venue">UIST '26</div>
+    <div>
+      <h3>EvoMaestro: Toward Interpretable and Steerable LLM-Driven Program Evolution</h3>
+      <p class="authors">Feng Liang, <b>Sizhe Cheng</b>, Yikai Li, Ruijie He, Xiaolin Wen, Yong Wang</p>
+      <p class="desc">Turns black-box LLM program evolution into something an expert can read and steer: an evolution
+        overview of winning and failed strategies, a radial tree of the full evolution history, and natural-language
+        code explanation — plus merging complementary solutions and steering by prompt.</p>
+    </div>
+  </article>
+
+  <article class="pub">
+    <div class="venue">DIS '26</div>
+    <div>
+      <h3>Proteus: Shapeshifting Desktop Visualizations for Mobile via Multi-level Intelligent Adaptation</h3>
+      <p class="authors">Can Liu, <b>Sizhe Cheng</b>, Feng Liang, Zhibang Jiang, Lingru Huang, Kavinda Athapaththu, Yong Wang</p>
+      <p class="desc">An LLM-driven multi-agent system that parses live desktop charts and re-authors them for mobile
+        across a three-level design space: global topology, reference frame, and visual elements.</p>
+      <p class="meta"><a href="https://doi.org/10.1145/3800645.3813097">DOI</a><a href="https://arxiv.org/abs/2604.23299">arXiv</a></p>
+    </div>
+  </article>
+
+  <article class="pub">
+    <div class="venue">TOSEM '26</div>
+    <div>
+      <h3>Human in the Loop for Fuzz Testing: Literature Review and the Road Ahead</h3>
+      <p class="authors">Jiongchi Yu, Xiaolin Wen, <b>Sizhe Cheng</b>, Xiaofei Xie, Qiang Hu, Yong Wang</p>
+      <p class="desc">Surveys human-in-the-loop fuzzing and lays out a research agenda across human monitoring,
+        human steering, and human–LLM collaboration.</p>
+      <p class="meta"><a href="https://arxiv.org/abs/2603.13411">arXiv</a></p>
+    </div>
+  </article>
+
+  <article class="pub">
+    <div class="venue">CADCG '24</div>
+    <div>
+      <h3>KLMVis: Knowledge Graph-Based Retrieval Augmented Language Model Visual Analysis System</h3>
+      <p class="authors">Jian Shen, Minfeng Zhu, Yuxin Ma, <b>Sizhe Cheng</b>, Zhizhang Chen, Wei Chen</p>
+      <p class="desc">Knowledge-graph views and a backend query service over a medical knowledge graph, for inspecting
+        retrieval-augmented language models.</p>
+    </div>
+  </article>
+</section>
+
+<section>
+  <h2>Experience</h2><div class="rule"></div>
+
+  <div class="row">
+    <div>
+      <p class="what">Graduate Researcher</p>
+      <p class="where">College of Computing and Data Science, NTU · Advisor: Prof. Yong Wang</p>
+    </div>
+    <div class="when">Sep 2025 — present</div>
+    <p class="note">Lead author on mobile-visualization privacy; co-developer on LLM multi-agent systems for
+      visualization adaptation and interactive program evolution. Perception modeling and optimization, multi-agent
+      pipelines, and the front-end visual analytics interfaces that ship with each system.</p>
+  </div>
+
+  <div class="row">
+    <div>
+      <p class="what">Undergraduate Researcher</p>
+      <p class="where">Visual Analytics Group, SUSTech · Advisor: Prof. Yuxin Ma</p>
+    </div>
+    <div class="when">Sep 2023 — Jun 2025</div>
+    <p class="note">Designed and built RAGTrace end to end — evaluation metrics, retrieval/generation instrumentation,
+      backend services, and the coordinated multi-view interface — from formative interviews through expert evaluation.</p>
+  </div>
+
+  <div class="row">
+    <div>
+      <p class="what">Research Assistant</p>
+      <p class="where">State Key Laboratory of CAD&amp;CG, Zhejiang University · Advisors: Prof. Minfeng Zhu, Prof. Wei Chen</p>
+    </div>
+    <div class="when">Jan — Sep 2024</div>
+    <p class="note">Interactive tooling for inspecting and improving RAG systems (knowledge-graph views in D3.js, backend
+      query service); vision-language model fine-tuning, and data pruning / condensation to cut training cost at fixed quality.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Education</h2><div class="rule"></div>
+  <div class="row">
+    <div>
+      <p class="what">Nanyang Technological University</p>
+      <p class="where">M.Eng. by Research, Computer Science</p>
+    </div>
+    <div class="when">2025 — present</div>
+  </div>
+  <div class="row">
+    <div>
+      <p class="what">Southern University of Science and Technology</p>
+      <p class="where">B.Eng. in Computer Science and Technology · GPA 3.76/4.0</p>
+    </div>
+    <div class="when">2021 — 2025</div>
+  </div>
+</section>
+
+<section>
+  <h2>Awards</h2><div class="rule"></div>
+  <ul class="plain">
+    <li><b>Silver Medal</b>, ICPC Asia Hangzhou Regional Contest — team leader <span class="when">2022</span></li>
+    <li><b>Silver Medal</b>, ICPC Asia Hefei Regional Contest — team leader <span class="when">2022</span></li>
+    <li><b>Outstanding Graduate</b>, SUSTech <span class="when">2025</span></li>
+  </ul>
+</section>
+
+<section>
+  <h2>Toolbox</h2><div class="rule"></div>
+  <dl class="skills">
+    <dt>Languages</dt><dd>C, C++, Java, Python, SQL, JavaScript, HTML/CSS</dd>
+    <dt>Frameworks</dt><dd>Vue.js, D3.js, Spring Boot, PyTorch, TensorFlow, Figma, LaTeX, Git, Linux</dd>
+    <dt>LLM engineering</dt><dd>RAG pipeline design and evaluation, multi-agent systems, prompt design, fine-tuning of (vision-)language models, data pruning &amp; condensation</dd>
+    <dt>Research methods</dt><dd>Interactive system design, formative &amp; expert interviews, controlled lab and field user studies</dd>
+  </dl>
+</section>
+
+<footer>
+  <span>© <span id="y">2026</span> Sizhe Cheng</span>
+  <span><a href="./legacy.html">older pages</a></span>
+</footer>
+
+<script>document.getElementById('y').textContent=new Date().getFullYear();</script>
+</div>
 </body>
 </html>

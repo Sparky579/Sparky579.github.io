@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BAIT · Visual-illusion-inspired Privacy Preservation for Mobile Data Visualization</title>
+  <meta name="description" content="BAIT: a visual-illusion-inspired approach that stacks a decoy visualization over the original to preserve the privacy of mobile data visualizations against shoulder-surfing attacks. CHI 2026." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main>
+    <!-- ===================== HEADER ===================== -->
+    <header class="hero">
+      <p class="venue">CHI&nbsp;2026 · Barcelona, Spain</p>
+      <h1 class="title"><span class="acronym">BAIT</span>: Visual-illusion-inspired Privacy&nbsp;Preservation<br />for Mobile Data Visualization</h1>
+
+      <ul class="authors">
+        <li><a href="mailto:sizhe003@e.ntu.edu.sg">Sizhe Cheng</a><sup>1,&#42;</sup></li>
+        <li><a href="mailto:shzhang.2021@smu.edu.sg">Songheng Zhang</a><sup>2,&#42;</sup></li>
+        <li><a href="mailto:dm878@cam.ac.uk">Dong Ma</a><sup>3</sup></li>
+        <li><a href="mailto:yong-wang@ntu.edu.sg">Yong Wang</a><sup>1,&dagger;</sup></li>
+      </ul>
+
+      <ul class="affiliations">
+        <li><sup>1</sup>Nanyang Technological University</li>
+        <li><sup>2</sup>Singapore Management University</li>
+        <li><sup>3</sup>University of Cambridge</li>
+      </ul>
+      <p class="note"><sup>&#42;</sup>Both authors contributed equally &nbsp;·&nbsp; <sup>&dagger;</sup>Corresponding author</p>
+
+      <nav class="links">
+        <a class="btn" href="assets/bait-paper.pdf">
+          <span class="ico">&#128196;</span> Paper
+        </a>
+        <a class="btn" href="#video">
+          <span class="ico">&#127909;</span> Videos
+        </a>
+        <a class="btn" href="https://github.com/Sparky579/BAIT">
+          <span class="ico">&#128187;</span> Code
+        </a>
+        <a class="btn" href="https://doi.org/10.1145/3772318.3791259">
+          <span class="ico">&#128279;</span> DOI
+        </a>
+      </nav>
+    </header>
+
+    <!-- ===================== ABSTRACT ===================== -->
+    <section class="abstract">
+      <h2>Abstract</h2>
+      <p>
+        With the prevalence of mobile data visualizations, there have been growing concerns about
+        their privacy risks, especially shoulder surfing attacks. Inspired by prior research on
+        visual illusion, we propose BAIT, a novel approach to automatically generate
+        privacy-preserving visualizations by stacking a decoy visualization over a given
+        visualization. It allows visualization owners at proximity to clearly discern the original
+        visualization and makes shoulder surfers at a distance be misled by the decoy visualization,
+        by adjusting different visual channels of a decoy visualization (e.g., shape, position, tilt,
+        size, color and spatial frequency). We explicitly model human perception effect at different
+        viewing distances to optimize the decoy visualization design. Privacy-preserving examples and
+        two in-depth user studies demonstrate the effectiveness of BAIT in both controlled lab study
+        and real-world scenarios.
+      </p>
+    </section>
+
+    <!-- ===================== CORE IDEA ===================== -->
+    <section class="block" id="core-idea">
+      <h2>Core Idea</h2>
+      <p>
+        A shoulder surfer can infer sensitive trends, proportions, and clusters from a brief glance
+        at a mobile visualization. BAIT overlays a <b>plausible decoy visualization</b> that shares the
+        original chart’s visual form while encoding different information. The owner at close range
+        can distinguish the original marks; a shoulder surfer farther away is led to perceive the
+        decoy’s misleading patterns.
+      </p>
+      <p>
+        To create this separation, BAIT combines chart-specific changes to the decoy’s geometry with
+        adjustments to color, contrast, and spatial frequency. A perception-driven optimization
+        selects the configuration that balances <b>readability for the owner</b> with
+        <b>privacy against distant shoulder surfers</b>.
+      </p>
+      <figure class="teaser">
+        <img src="assets/teaser.png" alt="BAIT viewing scenario: the owner at close range reads the original chart, while a distant shoulder surfer perceives a decoy." />
+        <figcaption>
+          <b>(A)</b> Close viewing: the owner discerns the original visualization.
+          <b>(B)</b> Far viewing: the shoulder surfer perceives the decoy.
+        </figcaption>
+      </figure>
+    </section>
+
+    <!-- ===================== THEORETICAL FOUNDATION ===================== -->
+    <section class="block" id="theoretical-foundation">
+      <h2>Theoretical Foundation</h2>
+      <p>
+        <b>Visual illusion and perceptual grouping.</b> BAIT draws on visual perception research
+        showing that perceived structure can diverge from the underlying stimulus. The
+        <b>Gestalt principle of similarity</b> explains why marks with similar shapes and hues tend
+        to be grouped together. By preserving these similarities while changing data-encoding
+        channels, BAIT makes the decoy visually coherent and difficult for a distant observer to
+        separate from the original.
+      </p>
+      <p>
+        <b>Distance-dependent contrast sensitivity.</b> The Contrast Sensitivity Function (CSF)
+        characterizes how visibility depends on spatial frequency and luminance or chromatic
+        contrast. As viewing distance increases, the same details occupy a smaller visual angle
+        and become harder to resolve. BAIT blurs the decoy to retain its low-frequency structure
+        and applies a masking scheme to increase the original visualization’s spatial frequency,
+        allowing the owner to resolve the original marks up close while the decoy dominates farther away.
+      </p>
+      <p>
+        <b>Perception-driven optimization.</b> BAIT simulates close and far viewing through
+        distance-dependent downsampling. It then searches over luminance, chroma, blur kernel size,
+        and mask area, using the Visual Saliency-based Index (VSI) and Multi-Scale Structural
+        Similarity (MS-SSIM) to favor similarity to the original at close range and to the decoy at
+        a distance. The objective maximizes these perceptual differences across viewing distances.
+      </p>
+      <figure class="wide">
+        <img src="assets/csf.png" alt="Contrast sensitivity functions for luminance and chromatic contrast, showing visible and invisible regions across spatial frequency." />
+        <figcaption>
+          Contrast sensitivity functions for <b>(A)</b> luminance and <b>(B)</b> chromatic contrast,
+          illustrating how spatial frequency and contrast jointly affect visibility.
+        </figcaption>
+      </figure>
+    </section>
+
+    <!-- ===================== CHANNELS ===================== -->
+    <section class="block">
+      <h2>Decoy Design Across Chart Types</h2>
+      <p>
+        BAIT uses chart-specific rules to alter data-encoding channels while preserving the chart
+        type: it varies bar heights, adjusts line positions and slopes, displaces scatter points,
+        and splits or merges pie sectors. Color and spatial-frequency adjustments then control
+        how the original and decoy are perceived at different viewing distances.
+      </p>
+      <figure class="wide">
+        <img src="assets/channels.png" alt="Decoy manipulations across pie, bar, line, and scatter charts." />
+        <figcaption>
+          Decoy design across chart types: <b>(A)</b> merged / split pie sectors,
+          <b>(B)</b> altered bar heights, <b>(C)</b> merged and additional lines,
+          <b>(D)</b> displaced scatter points.
+        </figcaption>
+      </figure>
+    </section>
+
+    <!-- ===================== VIDEO ===================== -->
+    <section class="block" id="video">
+      <h2>Video Demonstrations</h2>
+      <p>
+        Each recording shows a BAIT-protected visualization as the camera moves from close to far,
+        revealing how perception shifts from the original marks to the decoy. Select a chart type
+        below to play its demonstration, or use full screen to inspect the visual details.
+      </p>
+      <div class="video-grid">
+        <article class="demo-card" aria-labelledby="bar-demo-title">
+          <h3 id="bar-demo-title">Bar Charts</h3>
+          <div class="video-wrap">
+            <video controls playsinline preload="metadata" width="1920" height="1080" poster="assets/bait-bar-poster.jpg" aria-labelledby="bar-demo-title" aria-describedby="bar-demo-description">
+              <source src="assets/bait-bar.mp4" type="video/mp4" />
+              <a href="assets/bait-bar.mp4">Download the bar chart demonstration</a>.
+            </video>
+          </div>
+          <p id="bar-demo-description">
+            Decoy bars with altered heights change apparent comparisons at a distance, while the
+            original bars remain distinguishable up close.
+          </p>
+        </article>
+        <article class="demo-card" aria-labelledby="line-demo-title">
+          <h3 id="line-demo-title">Line Charts</h3>
+          <div class="video-wrap">
+            <video controls playsinline preload="metadata" width="1920" height="1080" poster="assets/bait-line-poster.jpg" aria-labelledby="line-demo-title" aria-describedby="line-demo-description">
+              <source src="assets/bait-line.mp4" type="video/mp4" />
+              <a href="assets/bait-line.mp4">Download the line chart demonstration</a>.
+            </video>
+          </div>
+          <p id="line-demo-description">
+            Additional decoy lines and altered slopes present misleading trends to distant viewers;
+            the owner can distinguish the original lines at close range.
+          </p>
+        </article>
+        <article class="demo-card" aria-labelledby="scatter-demo-title">
+          <h3 id="scatter-demo-title">Scatter Plots</h3>
+          <div class="video-wrap">
+            <video controls playsinline preload="metadata" width="1920" height="1080" poster="assets/bait-scatter-poster.jpg" aria-labelledby="scatter-demo-title" aria-describedby="scatter-demo-description">
+              <source src="assets/bait-scatter.mp4" type="video/mp4" />
+              <a href="assets/bait-scatter.mp4">Download the scatter plot demonstration</a>.
+            </video>
+          </div>
+          <p id="scatter-demo-description">
+            Larger, displaced decoy points change the perceived distribution and conceal the
+            original points from distant shoulder surfers.
+          </p>
+        </article>
+        <article class="demo-card" aria-labelledby="pie-demo-title">
+          <h3 id="pie-demo-title">Pie Charts</h3>
+          <div class="video-wrap">
+            <video controls playsinline preload="metadata" width="1920" height="1080" poster="assets/bait-pie-poster.jpg" aria-labelledby="pie-demo-title" aria-describedby="pie-demo-description">
+              <source src="assets/bait-pie.mp4" type="video/mp4" />
+              <a href="assets/bait-pie.mp4">Download the pie chart demonstration</a>.
+            </video>
+          </div>
+          <p id="pie-demo-description">
+            Splitting and merging decoy sectors changes apparent proportions at a distance, while
+            the original sector boundaries remain visible up close.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===================== RESULTS ===================== -->
+    <section class="block" id="results">
+      <h2>Results</h2>
+      <p>
+        Across bar, line, scatter, and pie charts, BAIT preserves the original visualization’s
+        fine-grained structure at close range while shifting distant perception toward the decoy.
+        In the controlled study with 32 participants, mean recognition accuracy for the original
+        visualization was <b>96% at 30 cm</b> for owners and <b>4% at 90 cm</b> for shoulder surfers,
+        compared with 99% at both distances for unprocessed visualizations. A second study with
+        12 participants examined usability in real-world settings.
+      </p>
+      <figure class="wide">
+        <a class="figure-link" href="assets/results.png" target="_blank" rel="noopener" aria-label="Open the full-resolution BAIT results figure">
+          <img src="assets/results.png" width="1596" height="1080" loading="lazy" alt="Paper Figure 5 comparing bar, line, scatter, and pie charts in four rows: original visualization, BAIT at close range, BAIT at a distance, and decoy visualization." />
+        </a>
+        <figcaption>
+          <b>Examples from the paper (Figure 5).</b> From top to bottom: original visualizations,
+          BAIT under simulated close viewing, BAIT under simulated far viewing, and the decoys.
+          The effect depends on display size; open the figure at full resolution to inspect the details.
+        </figcaption>
+      </figure>
+    </section>
+
+    <!-- ===================== CITATION ===================== -->
+    <section class="block">
+      <h2>Citation</h2>
+      <pre class="bibtex">@inproceedings{cheng2026bait,
+  title     = {BAIT: Visual-illusion-inspired Privacy Preservation
+               for Mobile Data Visualization},
+  author    = {Cheng, Sizhe and Zhang, Songheng and Ma, Dong and Wang, Yong},
+  booktitle = {Proceedings of the 2026 CHI Conference on Human
+               Factors in Computing Systems (CHI '26)},
+  year      = {2026},
+  address   = {Barcelona, Spain},
+  publisher = {ACM},
+  doi       = {10.1145/3772318.3791259}
+}</pre>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 The Authors · Licensed under CC BY 4.0 · CHI '26</p>
+  </footer>
+  <script>
+    const demoVideos = document.querySelectorAll('.demo-card video');
+    demoVideos.forEach((video) => {
+      video.addEventListener('play', () => {
+        demoVideos.forEach((other) => {
+          if (other !== video) other.pause();
+        });
+      });
+    });
+  </script>
+</body>
+</html>
